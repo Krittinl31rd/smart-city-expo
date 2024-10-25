@@ -24,7 +24,25 @@ function generateQRCode(expireTime) {
     $(container).find('img').eq(0).on('click', function () {
         window.open(`${defaultURL}/?t=${expireTime}`, '_blank');
     });
+}
 
+function generateQRCodeArchi() {
+    const qr = qrcode(0, 'L');
+    qr.addData("https://www.archismarthome.com");
+    qr.make();
+    const size = 12;
+    const margin = 4;
+
+    const imgTag = qr.createImgTag(size, margin);
+
+    const container = $("#qrcodeArchi")[0]
+
+    $(container).html(imgTag);
+
+    $(container).find('img').eq(0).css('cursor', 'pointer');
+    $(container).find('img').eq(0).on('click', function () {
+        window.open(`https://www.archismarthome.com`, '_blank');
+    });
 }
 
 // Function to start the timer and update the QR code every 5 minutes
@@ -32,6 +50,7 @@ function startQR() {
     let expireTime = generateTimestamp();
     // localStorage.setItem('expireTimedefaultURL', expireTime);
     generateQRCode(expireTime);
+    generateQRCodeArchi();
 
     setInterval(() => {
         expireTime = generateTimestamp();
