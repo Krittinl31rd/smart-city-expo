@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slideshow</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .slideshow-container {
+            position: relative;
+            max-width: 100%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+        }
+
+        img {
+            width: 100%;
+            vertical-align: middle;
+        }
+
+        .fade {
+            animation: fadeEffect 1.5s ease-in-out;
+        }
+
+        @keyframes fadeEffect {
+            from {
+                opacity: .4;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .prev,
+        .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 16px;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 18px;
+            border: none;
+            user-select: none;
+        }
+
+        .prev {
+            left: 0;
+        }
+
+        .next {
+            right: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slideshow-container">
+        <div class="slide fade">
+            <img src="./images/image1.png" alt="Image 1">
+        </div>
+        <div class="slide fade">
+            <img src="./images/image2.jpg" alt="Image 2">
+        </div>
+        <div class="slide fade">
+            <img src="./images/image3.jpg" alt="Image 3">
+        </div>
+
+        <!-- Arrows for manual sliding -->
+        <a class="prev" onclick="moveSlide(-1)">&#10094;</a>
+        <a class="next" onclick="moveSlide(1)">&#10095;</a>
+    </div>
+
+    <script>
+        let slideIndex = 0;
+        let slides = document.getElementsByClassName("slide");
+        let autoSlideInterval;
+
+        // Show the initial slide
+        showSlide(slideIndex);
+
+        // Auto slide every 5 seconds
+        autoSlide();
+
+        // Function to change slides manually
+        function moveSlide(n) {
+            showSlide(slideIndex += n);
+        }
+
+        // Function to show the current slide
+        function showSlide(n) {
+            if (n >= slides.length) {
+                slideIndex = 0;
+            }
+            if (n < 0) {
+                slideIndex = slides.length - 1;
+            }
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slides[slideIndex].style.display = "block";
+        }
+
+        // Function to enable auto slide
+        function autoSlide() {
+            autoSlideInterval = setInterval(function () {
+                moveSlide(1);
+            }, 5000); // Change slide every 5 seconds
+        }
+
+        // Function to handle arrow key presses for manual slide
+        document.onkeydown = function (e) {
+            if (e.key === 'ArrowLeft') {
+                clearInterval(autoSlideInterval);  // Pause auto-slide
+                moveSlide(-1);  // Move to the previous slide
+                autoSlide();  // Resume auto-slide
+            } else if (e.key === 'ArrowRight') {
+                clearInterval(autoSlideInterval);
+                moveSlide(1);  // Move to the next slide
+                autoSlide();
+            }
+        };
+
+    </script>
+</body>
+
+</html>

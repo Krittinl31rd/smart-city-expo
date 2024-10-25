@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Setting | Slides</title>
+</head>
+
+<body>
+    <div class="max-w-5xl w-full mx-auto py-4">
+        <h3 class="text-2xl font-bold mb-4">Configure Slide Timings</h3>
+        <form id="configForm" class="flex flex-col justify-center items-center gap-4 bg-gray-200 rounded-3xl py-4">
+            <label for="slide0Time">Slide 1 Time (in seconds):</label>
+            <input type="number" id="slide0Time" name="slide0Time" value="" min="1">
+            <label for="slide1Time">Slide 2 Time (in seconds):</label>
+            <input type="number" id="slide1Time" name="slide1Time" value="" min="1">
+            <label for="slide2Time">Slide 3 Time (in seconds):</label>
+            <input type="number" id="slide2Time" name="slide2Time" value="" min="1">
+            <label for="slide2Time">Slide 4 Time (in seconds):</label>
+            <input type="number" id="slide3Time" name="slide3Time" value="" min="1">
+            <label for="slide2Time">Slide 5 Time (in seconds):</label>
+            <input type="number" id="slide4Time" name="slide4Time" value="" min="1">
+            <button type="button" onclick="updateSlideTimings()"
+                class="bg-yellow-400 min-w-16 py-1 rounded-lg text-xl hover:bg-yellow-500"><i
+                    class='bx bxs-save'></i></button>
+            <label id="statusSave"></label>
+            <a href="/index.html"
+                class="font-semibold bg-blue-600 text-white min-w-32 py-1 text-center rounded-lg hover:bg-blue-700">Go
+                to slide</a>
+        </form>
+    </div>
+
+    <script src="./setting.js"></script>
+</body>
+
+</html>
