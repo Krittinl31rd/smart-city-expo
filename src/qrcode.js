@@ -1,4 +1,5 @@
 let defaultURL = "http://192.168.1.66:5500";
+let archiURL = ""
 
 // Function to generate a timestamp 5 minutes from now
 function generateTimestamp() {
@@ -28,7 +29,7 @@ function generateQRCode(expireTime) {
 
 function generateQRCodeArchi() {
     const qr = qrcode(0, 'L');
-    qr.addData("https://www.archismarthome.com");
+    qr.addData(archiURL);
     qr.make();
     const size = 12;
     const margin = 4;
@@ -41,20 +42,18 @@ function generateQRCodeArchi() {
 
     $(container).find('img').eq(0).css('cursor', 'pointer');
     $(container).find('img').eq(0).on('click', function () {
-        window.open(`https://www.archismarthome.com`, '_blank');
+        window.open(archiURL, '_blank');
     });
 }
 
 // Function to start the timer and update the QR code every 5 minutes
 function startQR() {
     let expireTime = generateTimestamp();
-    // localStorage.setItem('expireTimedefaultURL', expireTime);
     generateQRCode(expireTime);
-    generateQRCodeArchi();
+    // generateQRCodeArchi();
 
     setInterval(() => {
         expireTime = generateTimestamp();
-        // localStorage.setItem('expireTimedefaultURL', expireTime);
         generateQRCode(expireTime);
     }, 10000);
 }

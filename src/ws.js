@@ -210,11 +210,11 @@ function checkCommand(cmd, payload) {
                             switch (payload.Ctrl) {
                                 case 5://temperature
                                     dev.value = value;
-                                    $('#temp' + dev.id).text(value)
+                                    $('#temp' + dev.id).text(value.toFixed(1))
                                     break
                                 case 6://humidity
                                     dev.value = value;
-                                    $('#hu' + dev.id).text(value)
+                                    $('#hu' + dev.id).text(value.toFixed(1))
                                     break
                                 case 20://lux
                                     dev.value = value;
@@ -222,11 +222,11 @@ function checkCommand(cmd, payload) {
                                     break
                                 case 21://soil_humidity
                                     dev.value = value;
-                                    $('#soilHu' + dev.id).text(value)
+                                    $('#soilHu' + dev.id).text(value.toFixed(1))
                                     break
                                 case 22://soil_temp
                                     dev.value = value;
-                                    $('#soilTemp' + dev.id).text(value)
+                                    $('#soilTemp' + dev.id).text(value.toFixed(1))
                                     break
                                 case 23://con
                                     dev.value = value;
@@ -246,10 +246,9 @@ function checkCommand(cmd, payload) {
                                     break
                                 case 27://ph
                                     dev.value = value;
-                                    $('#ph' + dev.id).text(value)
+                                    $('#ph' + dev.id).text(value.toFixed(2))
                                     break
                                 case 28:// tank_water
-                                    console.log(value)
                                     dev.value = value;
                                     $('#liters' + dev.id).text(value)
                                     const water = litToPer(value)
@@ -333,35 +332,42 @@ function initElement(deviceList) {
                         Id = "ph"
                         symbol = "pH";
                         label = "pH"
+                        value = dev.value
                     } else if (dev.name === "Soil Humidity_RH") {
                         Id = "soilHu"
                         symbol = "RH";
                         label = "Humidity"
+                        value = dev.value.toFixed(1)
                     } else if (dev.name === "Soil Temperature_°C") {
                         Id = "soilTemp"
                         symbol = "°C";
                         label = "Temperature"
+                        value = dev.value.toFixed(1)
                     } else if (dev.name === "Conductivity_us/cm") {
                         Id = "con"
                         symbol = "μs/cm";
                         label = "Conductivity"
+                        value = dev.value
                     } else if (dev.name === "Nitrogen_mg/kg") {
                         Id = "ni"
                         symbol = "mg/kg";
                         label = "Nitrogen"
+                        value = dev.value
                     } else if (dev.name === "Potassium_mg/kg") {
                         Id = "po"
                         symbol = "mg/kg";
                         label = "Potassium"
+                        value = dev.value
                     } else if (dev.name === "Phosphorus_mg/kg") {
                         Id = "pho"
                         symbol = "mg/kg";
                         label = "Phosphorus"
+                        value = dev.value
                     }
                     return `
             <div class="flex flex-col items-end gap-2">
                 <label class="text-3xl 2xl:text-4xl text-stone-200 ">${symbol}</label>
-                <label class="text-6xl 2xl:text-7xl font-bold text-emerald-400" id="${Id}${dev.id}">${dev.value}</label>
+                <label class="text-6xl 2xl:text-7xl font-bold text-emerald-400" id="${Id}${dev.id}">${value}</label>
                 <label class="text-4xl 2xl:text-5xl text-stone-200">${label}</label>
             </div>`;
                 }).filter(Boolean).join(' ');
@@ -391,15 +397,15 @@ function initElement(deviceList) {
                                 <div
                                     class="relative w-[308px] h-[308px] bg-gradient-to-b from-[#ffffff9d] to-gray-600 overflow-hidden rounded-3xl shadow-2xl">
                                     <div id="wave1${dev.id}"
-                                    class="absolute w-[308%] h-[308%] left-[-100%] bg-[#00beff66] rounded-[45%] animate-wave-01"
+                                    class="absolute w-[308%] h-[308%] left-[-100%] bg-[#00beff66] rounded-[45%] animate-wave-01 ease-in duration-300"
                                     style="top: ${wave1};">
                                     </div>
                                     <div id="wave2${dev.id}"
-                                        class="absolute w-[308%] h-[308%] left-[-100%] bg-[#00466e66] rounded-[43%] animate-wave-02"
+                                        class="absolute w-[308%] h-[308%] left-[-100%] bg-[#00466e66] rounded-[43%] animate-wave-02 ease-in duration-300"
                                         style="top: ${wave2};">
                                     </div>
                                     <div id="wave3${dev.id}"
-                                        class="absolute w-[308%] h-[308%] left-[-100%] bg-[#005a6e66] rounded-[40%] animate-wave-03"
+                                        class="absolute w-[308%] h-[308%] left-[-100%] bg-[#005a6e66] rounded-[40%] animate-wave-03 ease-in duration-300"
                                         style="top: ${wave3};">
                                     </div>
                                     <div class="absolute top-[5%] left-[10%]">
@@ -416,6 +422,7 @@ function initElement(deviceList) {
                             Id = "temp"
                             symbol = "°C";
                             label = "Temperature"
+                            value = dev.value.toFixed(1)
                             options = {
                                 border: "border-blue-300"
                             }
@@ -423,6 +430,7 @@ function initElement(deviceList) {
                             Id = "hu"
                             symbol = "RH";
                             label = "Humidity"
+                            value = dev.value.toFixed(1)
                             options = {
                                 border: "border-green-400"
                             }
@@ -430,6 +438,7 @@ function initElement(deviceList) {
                             Id = "lux"
                             symbol = "Lux";
                             label = "Illumination"
+                            value = dev.value
                             options = {
                                 border: "border-yellow-300"
                             }
@@ -438,7 +447,7 @@ function initElement(deviceList) {
                         <div class="flex flex-col items-center justify-center">
                             <div
                                 class="relative flex flex-col gap-4 items-center justify-center h-[192px] w-[192px] 2xl:h-[256px] 2xl:w-[256px] rounded-full border-[16px] ${options.border}">
-                                <span class="text-4xl 2xl:text-6xl font-bold text-white" id="${Id}${dev.id}">${dev.value}</span>
+                                <span class="text-4xl 2xl:text-6xl font-bold text-white" id="${Id}${dev.id}">${value}</span>
                                 <span class="text-3xl 2xl:text-4xl text-stone-200">${symbol}</span>
                             </div>
                             <label class="mt-4 text-4xl 2xl:text-5xl text-stone-200">${label}</label>
