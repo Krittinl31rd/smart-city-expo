@@ -35,7 +35,7 @@ function showSlide(n) {
 
     if (slideIndex == 2) {
         playVid();
-    } else {
+    } else if (slideIndex == 1 || slideIndex == 3) {
         pauseVid();
     }
 }
@@ -82,6 +82,7 @@ function playVid() {
 
 function pauseVid() {
     vid.pause();
+    vid.currentTime = 0;
 }
 
 // Function to handle keypress events for manual slide and pause functionality
@@ -139,3 +140,28 @@ $('#fullscreenBtn').on('click', function () {
     }
 });
 
+
+let cursorTimeout;
+
+// Function to hide the cursor
+function hideCursor() {
+    document.body.style.cursor = 'none';
+}
+
+// Function to reset the timer and show the cursor again
+function resetCursorTimer() {
+    // Show the cursor
+    document.body.style.cursor = 'default';
+
+    // Clear any existing timer
+    clearTimeout(cursorTimeout);
+
+    // Set a new timer to hide the cursor after 5 seconds of inactivity
+    cursorTimeout = setTimeout(hideCursor, 5000);
+}
+
+// Attach the reset function to mousemove event
+document.addEventListener('mousemove', resetCursorTimer);
+
+// Initialize the cursor timer on page load
+resetCursorTimer();
