@@ -3,6 +3,8 @@ let slides = document.getElementsByClassName("hidden");
 let autoSlideInterval;
 let isPaused = false;
 
+let vid = document.getElementById("myVideo");
+
 // Load saved slide times from local storage, or use defaults
 let slideTimes = JSON.parse(localStorage.getItem("slideTimes")) || [5000, 5000, 5000, 5000, 5000];
 
@@ -30,17 +32,16 @@ function showSlide(n) {
         slides[i].style.display = "none";
     }
     slides[slideIndex].style.display = "block";
+
+    if (slideIndex == 2) {
+        playVid();
+    } else {
+        pauseVid();
+    }
 }
 
 // Function to dynamically set the interval for each slide
 function getSlideInterval(slideIndex) {
-    // if (slideIndex == 0) {
-    //     return 5000; // 7 seconds for slide[0]
-    // } else if (slideIndex == 1) {
-    //     return 5000;
-    // } else {
-    //     return 3000; // Default 5 seconds for other slides
-    // }
     return slideTimes[slideIndex] || 5000;
 }
 
@@ -72,6 +73,15 @@ function checkPause() {
     } else {
         resumeSlide();
     }
+}
+
+function playVid() {
+    vid.currentTime = 0;
+    vid.play();
+}
+
+function pauseVid() {
+    vid.pause();
 }
 
 // Function to handle keypress events for manual slide and pause functionality
