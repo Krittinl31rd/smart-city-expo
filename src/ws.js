@@ -505,7 +505,7 @@ function initElement(deviceList) {
                             <label class="text-7xl 2xl:text-9xl font-bold text-white" id="${Id}${dev.id}">${value}</label>
                             <label class="text-4xl text-yellow-400">${symbol}</label>
                         </div>
-                        <label class="text-5xl 2xl:text-6xl text-gray-300 font-semibold ml-8">${dev.name}</label>
+                        <label class="text-5xl 2xl:text-6xl text-[#95c3ff] font-semibold ml-8">${dev.name}</label>
                     </div>`
             }).filter(Boolean).join(' ');
             $("#powerGrid").append(powerElements);

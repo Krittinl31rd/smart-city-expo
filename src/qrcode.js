@@ -12,7 +12,7 @@ function generateQRCode(expireTime) {
     const qr = qrcode(0, 'L');
     qr.addData(`${defaultURL}/?t=${expireTime}`);
     qr.make();
-    const size = 16;
+    const size = 24;
     const margin = 4;
 
     const imgTag = qr.createImgTag(size, margin);
