@@ -223,10 +223,14 @@ function checkCommand(cmd, payload) {
                                 case 21://soil_humidity
                                     dev.value = value;
                                     $('#soilHu' + dev.id).text(value.toFixed(1))
+                                    $('#HUSOIL' + dev.id).text(value.toFixed(1))
+                                    $('#HUSOIL-2' + dev.id).text(value.toFixed(1))
                                     break
                                 case 22://soil_temp
                                     dev.value = value;
                                     $('#soilTemp' + dev.id).text(value.toFixed(1))
+                                    $('#TEMPSOIL' + dev.id).text(value.toFixed(1))
+                                    $('#TEMPSOIL-2' + dev.id).text(value.toFixed(1))
                                     break
                                 case 23://con
                                     dev.value = value;
@@ -235,14 +239,20 @@ function checkCommand(cmd, payload) {
                                 case 24://nitrogen
                                     dev.value = value;
                                     $('#ni' + dev.id).text(value)
+                                    $('#N' + dev.id).text(value)
+                                    $('#N-2' + dev.id).text(value)
                                     break
                                 case 25://potassuim
                                     dev.value = value;
                                     $('#po' + dev.id).text(value)
+                                    $('#P' + dev.id).text(value)
+                                    $('#P-2' + dev.id).text(value)
                                     break
                                 case 26://phophorus
                                     dev.value = value;
                                     $('#pho' + dev.id).text(value)
+                                    $('#K' + dev.id).text(value)
+                                    $('#K-2' + dev.id).text(value)
                                     break
                                 case 27://ph
                                     dev.value = value;
@@ -510,7 +520,85 @@ function initElement(deviceList) {
             }).filter(Boolean).join(' ');
             $("#powerGrid").append(powerElements);
         }
+
+        if (devList.sensor.length > 0) {
+            const slideContainer = $(`#slide3`)[0]
+            const slide3Container = $(`
+               <div
+                class="bg-[url('./images/slide4.jpg')] bg-cover bg-center flex flex-col gap-4 relative z-[99] overflow-hidden min-h-screen">
+            </div>`)
+            slide3Container.appendTo(slideContainer);
+
+            const soilElements = devList.sensor
+                .filter((dev) => dev.name == "Soil Humidity_RH" || dev.name == "Soil Temperature_°C" || dev.name == "Nitrogen_mg/kg" || dev.name == "Potassium_mg/kg" || dev.name == "Phosphorus_mg/kg")
+                .map((dev) => {
+                    let value = dev.value.toFixed(1)
+                    let top;
+                    let left;
+                    let id;
+                    if (dev.name == "Soil Humidity_RH") {
+                        id = `HUSOIL${dev.id}`
+                        top = "top-[185px]"
+                        left = "left-[120px]"
+                    } else if (dev.name == "Soil Temperature_°C") {
+                        id = `TEMPSOIL${dev.id}`
+                        top = "top-[185px]"
+                        left = "left-[285px]"
+                    } else if (dev.name == "Nitrogen_mg/kg") {
+                        id = `N${dev.id}`
+                        top = "top-[135px]"
+                        left = "left-[515px]"
+                    } else if (dev.name == "Potassium_mg/kg") {
+                        id = `P${dev.id}`
+                        top = "top-[190px]"
+                        left = "left-[515px]"
+                    } else if (dev.name == "Phosphorus_mg/kg") {
+                        id = `K${dev.id}`
+                        top = "top-[245px]"
+                        left = "left-[515px]"
+                    }
+                    return `
+                <h1 class="text-3xl font-semibold text-[#1A4288] absolute ${top} ${left}" id="${id}">${value}</h1>`
+                }).filter(Boolean).join(' ');
+            $(slide3Container).append(soilElements);
+
+            const soilElements2 = devList.sensor
+                .filter((dev) => dev.name == "Soil Humidity_RH" || dev.name == "Soil Temperature_°C" || dev.name == "Nitrogen_mg/kg" || dev.name == "Potassium_mg/kg" || dev.name == "Phosphorus_mg/kg")
+                .map((dev) => {
+                    let value = dev.value.toFixed(1)
+                    let top;
+                    let left;
+                    let id;
+                    if (dev.name == "Soil Humidity_RH") {
+                        id = `HUSOIL-2${dev.id}`
+                        top = "top-[900px]"
+                        left = "left-[870px]"
+                    } else if (dev.name == "Soil Temperature_°C") {
+                        id = `TEMPSOIL-2${dev.id}`
+                        top = "top-[900px]"
+                        left = "left-[1035px]"
+                    } else if (dev.name == "Nitrogen_mg/kg") {
+                        id = `N-2${dev.id}`
+                        top = "top-[850px]"
+                        left = "left-[1265px]"
+                    } else if (dev.name == "Potassium_mg/kg") {
+                        id = `P-2${dev.id}`
+                        top = "top-[905px]"
+                        left = "left-[1265px]"
+                    } else if (dev.name == "Phosphorus_mg/kg") {
+                        id = `K-2${dev.id}`
+                        top = "top-[960px]"
+                        left = "left-[1265px]"
+                    }
+                    return `
+                <h1 class="text-3xl font-semibold text-[#1A4288] absolute ${top} ${left}" id="${id}">${value}</h1>`
+                }).filter(Boolean).join(' ');
+            $(slide3Container).append(soilElements2);
+        }
     }
+
+
+
 }
 
 
