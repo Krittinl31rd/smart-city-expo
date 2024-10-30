@@ -44,10 +44,7 @@ function updateSlideTimings() {
 
 window.onload = function () {
     let slideTimes = JSON.parse(localStorage.getItem("slideTimes")) || [5000, 5000, 5000, 5000, 5000, 5000];
-    document.getElementById('slide0Time').value = slideTimes[0] / 1000 || 5000 / 1000;
-    document.getElementById('slide1Time').value = slideTimes[1] / 1000 || 5000 / 1000;
-    document.getElementById('slide2Time').value = slideTimes[2] / 1000 || 5000 / 1000;
-    document.getElementById('slide3Time').value = slideTimes[3] / 1000 || 5000 / 1000;
-    document.getElementById('slide4Time').value = slideTimes[4] / 1000 || 5000 / 1000;
-    document.getElementById('slide5Time').value = slideTimes[5] / 1000 || 5000 / 1000;
+    slideTimes.map((slide, index) => {
+        document.getElementById(`slide${index}Time`).value = slide / 1000 || 5000 / 1000
+    })
 };

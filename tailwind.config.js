@@ -18,6 +18,7 @@ module.exports = {
         'wave-03': 'rotate 10s linear infinite',
         'fadeEffect': 'fadeEffect 2s ease-in-out ',
       }
+
     },
 
 

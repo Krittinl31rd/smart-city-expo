@@ -164,19 +164,45 @@ function checkCommand(cmd, payload) {
                 let dev = null;
                 deviceList.forEach(item => {
                     if (typeof item === 'object') {
-                        const { power, sensor } = item;
+                        const { dimmer, power, sensor } = item;
                         if (!dev && power) {
                             dev = power.find(dev => dev.id == deviceId);
                         }
                         if (!dev && sensor) {
                             dev = sensor.find(dev => dev.id == deviceId);
                         }
+                        if (!dev && dimmer) {
+                            dev = dimmer.find(dev => dev.id == deviceId);
+                        }
                     }
                 })
                 if (dev != null) {
                     let value = payload.V;
-                    // console.log(deviceId, payload.Ctrl, payload.V);
+                    if (deviceId <= 3000) {
+                        console.log(deviceId, payload.Ctrl, payload.V, dev.type);
+                    }
                     switch (dev.type) {
+                        case 3:  // dim
+                            switch (payload.Ctrl) {
+                                case 0: //online
+                                    break
+                                case 1: //bright
+                                    console.log("bright:" + value)
+                                    dev.bright = value;
+                                    $('#valueBright' + dev.id).css("width", `${value}%`);
+                                    $('#percentBright' + dev.id).text(value);
+                                    break
+                                case 2: //status
+                                    console.log("status:" + value)
+                                    dev.status = value;
+                                    if (value == 0) {
+                                        $('#statusBright' + dev.id).css("background-color", "red")
+                                    } else {
+                                        $('#statusBright' + dev.id).css("background-color", "green")
+                                    }
+                                    break
+                            }
+                            break
                         case 20:
                             switch (payload.Ctrl) {
                                 case 1: //voltage
@@ -219,49 +245,59 @@ function checkCommand(cmd, payload) {
                                 case 20://lux
                                     dev.value = value;
                                     $('#lux' + dev.id).text(value)
+                                    $('#valueLux' + dev.id).text(value)
                                     break
                                 case 21://soil_humidity
                                     dev.value = value;
                                     $('#soilHu' + dev.id).text(value.toFixed(1))
+                                    $('#valueSoilHu' + dev.id).text(value.toFixed(1))
                                     $('#HUSOIL' + dev.id).text(value.toFixed(1))
                                     $('#HUSOIL-2' + dev.id).text(value.toFixed(1))
                                     break
                                 case 22://soil_temp
                                     dev.value = value;
                                     $('#soilTemp' + dev.id).text(value.toFixed(1))
+                                    $('#valueSoilTemp' + dev.id).text(value.toFixed(1))
                                     $('#TEMPSOIL' + dev.id).text(value.toFixed(1))
                                     $('#TEMPSOIL-2' + dev.id).text(value.toFixed(1))
                                     break
                                 case 23://con
                                     dev.value = value;
                                     $('#con' + dev.id).text(value)
+                                    $('#valueCon' + dev.id).text(value)
                                     break
                                 case 24://nitrogen
                                     dev.value = value;
                                     $('#ni' + dev.id).text(value)
+                                    $('#valueNi' + dev.id).text(value)
                                     $('#N' + dev.id).text(value)
                                     $('#N-2' + dev.id).text(value)
                                     break
                                 case 25://potassuim
                                     dev.value = value;
                                     $('#po' + dev.id).text(value)
+                                    $('#valuePo' + dev.id).text(value)
                                     $('#P' + dev.id).text(value)
                                     $('#P-2' + dev.id).text(value)
                                     break
                                 case 26://phophorus
                                     dev.value = value;
                                     $('#pho' + dev.id).text(value)
+                                    $('#valuePho' + dev.id).text(value)
                                     $('#K' + dev.id).text(value)
                                     $('#K-2' + dev.id).text(value)
                                     break
                                 case 27://ph
                                     dev.value = value;
                                     $('#ph' + dev.id).text(value.toFixed(2))
+                                    $('#valuePh' + dev.id).text(value.toFixed(2))
                                     break
                                 case 28:// tank_water
                                     dev.value = value;
-                                    $('#liters' + dev.id).text(value)
                                     const water = litToPer(value)
+                                    $('#liters' + dev.id).text(value)
+                                    $('#valueTank' + dev.id).text(value)
+                                    $('#waterTank' + dev.id).css('height', `${water}%`);
                                     if (water <= 0) {
                                         $('#wave1' + dev.id).css('top', `110%`);
                                         $('#wave2' + dev.id).css('top', `110%`);
@@ -355,7 +391,7 @@ function initElement(deviceList) {
                         value = dev.value.toFixed(1)
                     } else if (dev.name === "Conductivity_us/cm") {
                         Id = "con"
-                        symbol = "μs/cm";
+                        symbol = "µS/cm";
                         label = "Conductivity"
                         value = dev.value
                     } else if (dev.name === "Nitrogen_mg/kg") {
@@ -378,7 +414,7 @@ function initElement(deviceList) {
             <div class="flex flex-col items-end gap-2">
                 <label class="text-3xl 2xl:text-4xl text-stone-200 ">${symbol}</label>
                 <label class="text-6xl 2xl:text-7xl font-bold text-emerald-400" id="${Id}${dev.id}">${value}</label>
-                <label class="text-4xl 2xl:text-5xl text-stone-200">${label}</label>
+                <label class="text-4xl 2xl:text-5xl text-[#b9d6fc]">${label}</label>
             </div>`;
                 }).filter(Boolean).join(' ');
             $("#sensorGrid").append(sensorElements);
@@ -460,7 +496,7 @@ function initElement(deviceList) {
                                 <span class="text-4xl 2xl:text-6xl font-bold text-white" id="${Id}${dev.id}">${value}</span>
                                 <span class="text-3xl 2xl:text-4xl text-stone-200">${symbol}</span>
                             </div>
-                            <label class="mt-4 text-4xl 2xl:text-5xl text-stone-200">${label}</label>
+                            <label class="mt-4 text-4xl 2xl:text-5xl text-[#b9d6fc]">${label}</label>
                         </div>`
                     }
                 }).filter(Boolean).join(' ');
@@ -595,6 +631,134 @@ function initElement(deviceList) {
                 }).filter(Boolean).join(' ');
             $(slide3Container).append(soilElements2);
         }
+
+        const streetLight = deviceList[1]
+        if (streetLight || streetLight.length > 0) {
+            if (streetLight.dimmer || streetLight.dimmer.length > 0) {
+                const dimmerElements = streetLight.dimmer
+                    .map((dev) => {
+                        let topStatus;
+                        let leftStatus;
+                        let leftValue;
+                        let topValue;
+                        let leftBright;
+                        let topBright
+                        let bg;
+                        if (dev.id == "2001") {
+                            leftStatus = "left-[274px]"
+                            topStatus = "top-[414px]"
+                            leftValue = "left-[195px]"
+                            topValue = "top-[449px]"
+                            leftBright = "left-[106px]"
+                            topBright = "top-[479px]"
+                        } else if (dev.id == "2007") {
+                            leftStatus = "left-[514px]"
+                            topStatus = "top-[414px]"
+                            leftValue = "left-[436px]"
+                            topValue = "top-[449px]"
+                            leftBright = "left-[346px]"
+                            topBright = "top-[479px]"
+                        } if (dev.status == 0) {
+                            bg = "background-color: red"
+                        } else {
+                            bg = "background-color: green"
+                        }
+                        return `
+                        <div id="statusBright${dev.id}"
+                                class="flex justify-center items-center w-[36px] h-[36px] text-white absolute  rounded-lg ${leftStatus} ${topStatus}"
+                                style="${bg}">
+                                <i class='bx bx-power-off'></i>
+                            </div>
+                            <div class="flex justify-start items-center absolute ${leftValue} ${topValue}">
+                                <h1 class="text-white" id="percentBright${dev.id}">${dev.bright}</h1>
+                                <h1 class="text-white ml-1">% </h1>
+                            </div>
+                            <div class="absolute w-[204px] h-[53px] bg-[#DDDDDD] rounded-lg ${leftBright} ${topBright}">
+                                <div class=" h-[100%] bg-[#F89B5C] rounded-lg" style="width: ${dev.bright}%;" id="valueBright${dev.id}"></div>
+                            </div>`
+                    }).filter(Boolean).join(' ');
+                $("#slide5Container").append(dimmerElements);
+            }
+        }
+
+        if (devList.sensor || deviceList.sensor.length > 0) {
+            const tankElements = devList.sensor
+                .filter((dev) => dev.name == "Tank_Litre")
+                .map((dev) => {
+                    let water = litToPer(dev.value)
+                    return `
+                   <div
+                    class="relative bg-gradient-to-br from-[#6a6a6a] to-[#313131] w-[128px] h-[358px] rounded-lg left-[106px] top-[576px]">
+                    <div class="absolute bg-gradient-to-br from-[#61A2FA] to-[#2464EE] w-full bottom-[0%] ease-in duration-300"
+                        style="height: ${water}%;" id="waterTank${dev.id}"></div>
+                    <h1 class="text-2xl text-stone-200 font-semibold absolute left-[10%] top-[5%]">Water</h1>
+                    <div
+                        class="absolute top-[85%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white flex flex-col w-full items-center">
+                        <h1 class="text-2xl" id="valueTank${dev.id}">${dev.value}</h1>
+                        <h1 class="text-xl">Litre</h1>
+                    </div>
+                </div>`
+                }).filter(Boolean).join(' ');
+            $("#slide5Container").append(tankElements);
+
+            const sensorSoilElements = devList.sensor
+                .filter((dev) => dev.name != "Temperature" && dev.name != "Humidity" && dev.name != "Tank_Litre")
+                .map((dev) => {
+                    let Id;
+                    let value;
+                    let top;
+                    let left;
+                    if (dev.name === "Potential of Hydrogen_pH") {
+                        Id = "valuePh"
+                        value = dev.value
+                        left = "left-[298px]"
+                        top = "top-[800px]"
+                    } else if (dev.name === "Soil Humidity_RH") {
+                        Id = "valueSoilHu"
+                        value = dev.value.toFixed(1)
+                        left = "left-[456px]"
+                        top = "top-[612px]"
+                    } else if (dev.name === "Soil Temperature_°C") {
+                        Id = "valueSoilTemp"
+                        value = dev.value.toFixed(1)
+                        left = "left-[298px]"
+                        top = "top-[612px]"
+                    } else if (dev.name === "Conductivity_us/cm") {
+                        Id = "valueCon"
+                        value = dev.value
+                        left = "left-[298px]"
+                        top = "top-[892px]"
+                    } else if (dev.name === "Nitrogen_mg/kg") {
+                        Id = "valueNi"
+                        value = dev.value
+                        left = "left-[456px]"
+                        top = "top-[705px]"
+                    } else if (dev.name === "Potassium_mg/kg") {
+                        Id = "valuePo"
+                        value = dev.value
+                        left = "left-[456px]"
+                        top = "top-[800px]"
+                    } else if (dev.name === "Phosphorus_mg/kg") {
+                        Id = "valuePho"
+                        value = dev.value
+                        left = "left-[456px]"
+                        top = "top-[892px]"
+                    } else if (dev.name === "Illumination_Lux") {
+                        Id = "valueLux"
+                        value = dev.value
+                        left = "left-[298px]"
+                        top = "top-[705px]"
+                    }
+                    return `
+                    <div class="absolute ${left} ${top}">
+                        <h1 class="text-2xl text-stone-200" id="${Id}${dev.id}">${value}</h1>
+                    </div>`
+                }).filter(Boolean).join(' ');
+            $("#slide5Container").append(sensorSoilElements);
+
+        }
+
+
     }
 
 

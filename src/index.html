@@ -30,7 +30,7 @@
 
         <!--slide 3  vdo telemed -->
         <div class="hidden" id="slide2">
-            <video class="w-full min-h-screen" id="myVideo" muted=true>
+            <video class="w-full min-h-screen" id="myVideo2" muted=true>
                 <source src="./videos/video1.mkv" type="video/mp4" />
             </video>
         </div>
@@ -41,44 +41,30 @@
 
         <!-- silde5 vdo streetlight -->
         <div class="hidden" id="slide4">
-            <video class="w-full min-h-screen" id="myVideo" muted=true>
+            <video class="w-full min-h-screen" id="myVideo4" muted=true>
                 <source src="./videos/video2.mkv" type="video/mp4" />
             </video>
         </div>
 
+        <!-- slide6 qrcode -->
         <div class="hidden" id="slide5">
-            <div
-                class="bg-black flex flex-row justify-center items-center gap-4 relative z-[99] overflow-hidden min-h-screen">
-
-                <div class="grid grid-cols-1  gap-16 p-16">
-
-                    <div class="flex flex-col items-center justify-center gap-8 p-8 rounded-lg">
-                        <h1 class="text-5xl font-bold text-white text-center">Scan to Control Devices</h1>
-                        <div id="qrcodeCon" class="bg-white rounded-xl p-4"></div>
-                        <!-- <div class="bg-gray-100 rounded-xl w-[50%] p-4">
-                            <p class="text-lg text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Soluta ipsum
-                                cupiditate illo
-                                excepturi expedita ratione quod voluptatum modi est exercitationem repudiandae, rerum
-                                maxime
-                                minus optio esse repellendus. Odio, velit reprehenderit!</p>
-                        </div> -->
-                    </div>
-
-                </div>
+            <div class="bg-[url('./images/qrcode.jpg')] bg-cover bg-center flex flex-col gap-4 relative z-[99] overflow-hidden min-h-screen"
+                id="slide5Container">
+                <div id="qrcodeCon" class="absolute left-[1150px] top-[220px] w-[640px] h-[640px]"></div>
 
             </div>
         </div>
 
-
-
     </div>
+
+    <!-- Download thailand smart city expo media -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="./slide.js"></script>
+
     <script src="./ws.js"></script>
     <script src="./qrcode.js"></script>
+    <script src="./slide.js"></script>
 </body>
 
 </html>
