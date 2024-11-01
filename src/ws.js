@@ -558,12 +558,12 @@ function initElement(deviceList) {
         }
 
         if (devList.sensor.length > 0) {
-            const slideContainer = $(`#slide3`)[0]
-            const slide3Container = $(`
+            const slideContainer = $(`#slide4`)[0]
+            const Slide4Container = $(`
                <div
                 class="bg-[url('./images/slide4.jpg')] bg-cover bg-center flex flex-col gap-4 relative z-[99] overflow-hidden min-h-screen">
             </div>`)
-            slide3Container.appendTo(slideContainer);
+            Slide4Container.appendTo(slideContainer);
 
             const soilElements = devList.sensor
                 .filter((dev) => dev.name == "Soil Humidity_RH" || dev.name == "Soil Temperature_°C" || dev.name == "Nitrogen_mg/kg" || dev.name == "Potassium_mg/kg" || dev.name == "Phosphorus_mg/kg")
@@ -596,7 +596,7 @@ function initElement(deviceList) {
                     return `
                 <h1 class="text-3xl font-semibold text-[#1A4288] absolute ${top} ${left}" id="${id}">${value}</h1>`
                 }).filter(Boolean).join(' ');
-            $(slide3Container).append(soilElements);
+            $(Slide4Container).append(soilElements);
 
             const soilElements2 = devList.sensor
                 .filter((dev) => dev.name == "Soil Humidity_RH" || dev.name == "Soil Temperature_°C" || dev.name == "Nitrogen_mg/kg" || dev.name == "Potassium_mg/kg" || dev.name == "Phosphorus_mg/kg")
@@ -629,7 +629,7 @@ function initElement(deviceList) {
                     return `
                 <h1 class="text-3xl font-semibold text-[#1A4288] absolute ${top} ${left}" id="${id}">${value}</h1>`
                 }).filter(Boolean).join(' ');
-            $(slide3Container).append(soilElements2);
+            $(Slide4Container).append(soilElements2);
         }
 
         const streetLight = deviceList[1]
@@ -644,7 +644,7 @@ function initElement(deviceList) {
                         let leftBright;
                         let topBright
                         let bg;
-                        if (dev.id == "2001") {
+                        if (dev.id == "2005") {
                             leftStatus = "left-[274px]"
                             topStatus = "top-[414px]"
                             leftValue = "left-[195px]"
@@ -677,7 +677,7 @@ function initElement(deviceList) {
                                 <div class=" h-[100%] bg-[#F89B5C] rounded-lg" style="width: ${dev.bright}%;" id="valueBright${dev.id}"></div>
                             </div>`
                     }).filter(Boolean).join(' ');
-                $("#slide5Container").append(dimmerElements);
+                $("#slide6Container").append(dimmerElements);
             }
         }
 
@@ -699,7 +699,7 @@ function initElement(deviceList) {
                     </div>
                 </div>`
                 }).filter(Boolean).join(' ');
-            $("#slide5Container").append(tankElements);
+            $("#slide6Container").append(tankElements);
 
             const sensorSoilElements = devList.sensor
                 .filter((dev) => dev.name != "Temperature" && dev.name != "Humidity" && dev.name != "Tank_Litre")
@@ -754,7 +754,7 @@ function initElement(deviceList) {
                         <h1 class="text-2xl text-stone-200" id="${Id}${dev.id}">${value}</h1>
                     </div>`
                 }).filter(Boolean).join(' ');
-            $("#slide5Container").append(sensorSoilElements);
+            $("#slide6Container").append(sensorSoilElements);
 
         }
 

@@ -6,7 +6,7 @@ let isPaused = false;
 
 
 // Load saved slide times from local storage, or use defaults
-let slideTimes = JSON.parse(localStorage.getItem("slideTimes")) || [5000, 5000, 5000, 5000, 5000];
+let slideTimes = JSON.parse(localStorage.getItem("slideTimes")) || [5000, 5000, 5000, 5000, 5000, 5000, 5000];
 
 // Show the initial slide
 showSlide(slideIndex);
@@ -35,12 +35,12 @@ function showSlide(n) {
 
     if (slideIndex == 2) {
         playVid(slideIndex);
-    } else if (slideIndex == 4) {
+    } else if (slideIndex == 5) {
         playVid(slideIndex);
         stopQR()
     } else if (slideIndex == 1 || slideIndex == 3) {
         pauseVid();
-    } else if (slideIndex == 5) {
+    } else if (slideIndex == 6) {
         startQR()
     } else if (slideIndex == 0) {
         stopQR()

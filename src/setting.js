@@ -6,9 +6,11 @@ function updateSlideTimings() {
     let slide3Time = document.getElementById('slide3Time').value * 1000;
     let slide4Time = document.getElementById('slide4Time').value * 1000;
     let slide5Time = document.getElementById('slide5Time').value * 1000;
+    let slide6Time = document.getElementById('slide6Time').value * 1000;
+
     try {
         let slideTimes = []
-        if (slide0Time != 0 && slide1Time != 0 && slide2Time != 0 && slide3Time != 0 && slide4Time != 0 && slide5Time != 0) {
+        if (slide0Time != 0 && slide1Time != 0 && slide2Time != 0 && slide3Time != 0 && slide4Time != 0 && slide5Time != 0 && slide6Time != 0) {
 
             slideTimes.push(
                 slide0Time,
@@ -16,7 +18,8 @@ function updateSlideTimings() {
                 slide2Time,
                 slide3Time,
                 slide4Time,
-                slide5Time
+                slide5Time,
+                slide6Time
             )
             // Save the updated times to local storage
             localStorage.setItem("slideTimes", JSON.stringify(slideTimes));
@@ -43,7 +46,7 @@ function updateSlideTimings() {
 
 
 window.onload = function () {
-    let slideTimes = JSON.parse(localStorage.getItem("slideTimes")) || [5000, 5000, 5000, 5000, 5000, 5000];
+    let slideTimes = JSON.parse(localStorage.getItem("slideTimes")) || [5000, 5000, 5000, 5000, 5000, 5000, 5000];
     slideTimes.map((slide, index) => {
         document.getElementById(`slide${index}Time`).value = slide / 1000 || 5000 / 1000
     })
