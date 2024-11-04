@@ -294,9 +294,13 @@ function checkCommand(cmd, payload) {
                                     break
                                 case 28:// tank_water
                                     dev.value = value;
-                                    const water = litToPer(value)
-                                    $('#liters' + dev.id).text(value)
-                                    $('#valueTank' + dev.id).text(value)
+                                    let cm = meterToCm(dev.value)
+                                    let liter = calculateVolumeOfWater(cm);
+                                    let water = litToPer(liter)
+                                    $('#liters' + dev.id).text(liter)
+                                    $('#cm' + dev.id).text(cm)
+                                    $('#valueTank' + dev.id).text(liter)
+                                    // $('#valueTankCm' + dev.id).text(cm)
                                     $('#waterTank' + dev.id).css('height', `${water}%`);
                                     if (water <= 0) {
                                         $('#wave1' + dev.id).css('top', `110%`);
@@ -423,7 +427,9 @@ function initElement(deviceList) {
                 .filter((dev) => dev.name == "Tank_Litre" || dev.name == "Temperature" || dev.name == "Humidity" || dev.name == "Illumination_Lux")
                 .map((dev) => {
                     if (dev.name == "Tank_Litre") {
-                        let water = litToPer(dev.value)
+                        let cm = meterToCm(dev.value)
+                        let liter = calculateVolumeOfWater(cm);
+                        let water = litToPer(liter)
                         let wave1 = "0", wave2 = "0", wave3 = "0";
                         if (water <= 0) {
                             wave1 = "110%"
@@ -457,9 +463,15 @@ function initElement(deviceList) {
                                     <div class="absolute top-[5%] left-[10%]">
                                         <h1 class="text-3xl font-bold">Water</h1>
                                     </div>
-                                    <div class="absolute top-[70%] left-[0%] text-white flex  flex-col w-full">
-                                        <label class=" text-4xl font-bold text-center" id="liters${dev.id}">${dev.value}</label>
-                                        <label class="text-2xl text-center">Litters</label>
+                                    <div class="absolute top-[70%] left-[0%] text-white flex items-center justify-evenly  flex-row w-full">
+                                        <div class="flex flex-col items-center justify-center w-full">
+                                            <label class="text-3xl font-bold text-center" id="liters${dev.id}">${liter}</label>
+                                            <label class="text-2xl text-center">Litre</label>
+                                        </div>
+                                        <div class="flex flex-col items-center justify-center w-full">
+                                            <label class="text-3xl font-bold text-center" id="cm${dev.id}">${cm}</label>
+                                            <label class="text-2xl text-center">(cm.)</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>`
@@ -636,6 +648,7 @@ function initElement(deviceList) {
         if (streetLight || streetLight.length > 0) {
             if (streetLight.dimmer || streetLight.dimmer.length > 0) {
                 const dimmerElements = streetLight.dimmer
+                    .filter((dev) => dev.id != "2006")
                     .map((dev) => {
                         let topStatus;
                         let leftStatus;
@@ -644,6 +657,7 @@ function initElement(deviceList) {
                         let leftBright;
                         let topBright
                         let bg;
+                        console.log(dev.id)
                         if (dev.id == "2005") {
                             leftStatus = "left-[274px]"
                             topStatus = "top-[414px]"
@@ -685,7 +699,9 @@ function initElement(deviceList) {
             const tankElements = devList.sensor
                 .filter((dev) => dev.name == "Tank_Litre")
                 .map((dev) => {
-                    let water = litToPer(dev.value)
+                    let cm = meterToCm(dev.value)
+                    let liter = calculateVolumeOfWater(cm);
+                    let water = litToPer(liter).toString();
                     return `
                    <div
                     class="relative bg-gradient-to-br from-[#6a6a6a] to-[#313131] w-[128px] h-[358px] rounded-lg left-[106px] top-[576px]">
@@ -693,9 +709,10 @@ function initElement(deviceList) {
                         style="height: ${water}%;" id="waterTank${dev.id}"></div>
                     <h1 class="text-2xl text-stone-200 font-semibold absolute left-[10%] top-[5%]">Water</h1>
                     <div
-                        class="absolute top-[85%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white flex flex-col w-full items-center">
-                        <h1 class="text-2xl" id="valueTank${dev.id}">${dev.value}</h1>
-                        <h1 class="text-xl">Litre</h1>
+                        class="absolute top-[83%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white flex flex-col w-full items-center">
+                        <h1 class="text-3xl" id="valueTank${dev.id}">${liter}</h1>
+                        <h1 class="text-2xl">Litre</h1>
+                        <h1 class="text-xl">(<span id="valueTankCm${dev.id}">${cm}</span> <span>cm.</span>)</h1>
                     </div>
                 </div>`
                 }).filter(Boolean).join(' ');
@@ -768,12 +785,19 @@ function initElement(deviceList) {
 
 // functional other
 
-
-function litToPer(n) {
-    let litMax = 6 // litters
-    return ((n / litMax) * 100).toFixed(2)
+const radius = 13; // รัศมีของถังในหน่วยเซนติเมตร
+function calculateVolumeOfWater(height) {
+    const volume = Math.PI * Math.pow(radius, 2) * height; // คำนวณปริมาตร
+    return (volume / 1000).toFixed(2);
 }
 
+function meterToCm(n) {
+    return (n * 100).toFixed(2)
+}
 
+function litToPer(n) {
+    let litMax = 18.9 // litters
+    return Math.floor((n / litMax) * 100).toFixed(2)
+}
 
 connectWS()
