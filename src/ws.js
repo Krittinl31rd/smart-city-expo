@@ -512,7 +512,7 @@ function initElement(deviceList) {
                             <div class="grid grid-cols-3 gap-8 w-full" id="powerGrid">
                                 <div class="col-span-3 flex items-center">
                                     <img src="./images/logo-electric.png" class="w-[156px] h-[156px] 2xl:w-[208px] 2xl:h-[208px]">
-                                    <h1 class="text-9xl ml-8 font-bold bg-gradient-to-b from-yellow-300 to-orange-500 inline-block text-transparent bg-clip-text ">Archi Electric</h1>
+                                    <h1 class="text-9xl ml-8 font-bold bg-gradient-to-b from-yellow-300 to-orange-500 inline-block text-transparent bg-clip-text leading-normal">Archi Power Monitoring</h1>
                                 </div>
                             </div>
                     </div>
